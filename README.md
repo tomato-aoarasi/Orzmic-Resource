@@ -1,0 +1,10 @@
+# Orzmic Resource
+本脚本用于orzmic的apk文件提取
+脚本由 [OrzmicNotes](https://github.com/7aGiven/OrzmicNotes) 改进而来
+致谢: [7aGiven](https://github.com/7aGiven) 
+资源包括
+角色立绘,角色介绍,曲目信息,铺面,曲绘,曲目音频
+
+# 使用示例
+<pre><code>$ python3 getDatas.py orzmic.apk</code></pre>
+※ apk需要与脚本在同一目录
