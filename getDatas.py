@@ -36,12 +36,13 @@ def saveIll():
             if entry.startswith('assets/charts/'): # and not os.path.splitext(entry)[1]:
                 with apk.open(entry) as f:
                     env = UnityPy.load(f)
+                    count = 0
                     for obj in env.objects:
                         data = obj.read()
                         filename = data.name
                         sub_directory = f"{filename.split('_')[0]}"
                         
-                        if filename.endswith("_img") and obj.type.name in ["Texture2D"]:
+                        if filename.endswith("_img") and obj.type.name in ["Texture2D", "Sprite"]:
                             print(filename)
                             # parse the object data
                             r = data.read()
@@ -49,7 +50,9 @@ def saveIll():
                             # create destination path
                             dir = f"covers/{sub_directory}/"
                             createDirectory(dir)
-                            dest = os.path.join(dir, "cover")
+                            dest = os.path.join(dir, f"{obj.type.name}")
+                            
+                            count += 1
 
                             # make sure that the extension is correct
                             # you probably only want to do so with images/textures
