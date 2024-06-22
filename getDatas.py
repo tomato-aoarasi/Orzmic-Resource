@@ -9,7 +9,7 @@ file_apk = sys.argv[1]
 
 UnityPy.set_assetbundle_decrypt_key(DECRYPT_KEY)
 
-def createDirectory(directory : str):
+def createDirectory(directory: str):
     if not os.path.exists(directory):
         os.makedirs(directory)
 
@@ -80,19 +80,19 @@ def saveClips():
     directory = "clips"
     createDirectory(directory)
     with zipfile.ZipFile(file_apk) as apk:
-        with apk.open("assets/clips") as f:
-            env = UnityPy.load(f)
-    for obj in env.objects:
-        if obj.type.name in ["AudioClip"]:
-            clip = obj.read()
-            print(clip.name)
-            #sub_directory = clip.name
-            #print(sub_directory)
-            #directory = f"clips/{sub_directory}"
-            #createDirectory(directory)
-            for name, data in clip.samples.items():
-                with open(f"{directory}/{name}", "wb") as f:
-                    f.write(data)
+        all_entries = apk.namelist()
+        # 遍历所有项，找到在 'assets/charts' 目录下的项
+        for entry in all_entries:
+            if entry.startswith('assets/clips/'): # and not os.path.splitext(entry)[1]:
+                with apk.open(entry) as f:
+                    env = UnityPy.load(f)
+                    for obj in env.objects:
+                        if obj.type.name in ["AudioClip"]:
+                            clip = obj.read()
+                            print(clip.name)
+                            for name, data in clip.samples.items():
+                                with open(f"{directory}/{name}", "wb") as f:
+                                    f.write(data)
      
 def saveCharacterheads():
     directory = "characters/"
@@ -141,7 +141,7 @@ def saveCharacterheads():
                             with open(f"{directory}{filename}.json", 'w', encoding='utf-8') as f:
                                 f.write(character_text)
     
-        
+       
 if __name__ == "__main__":
     while(True):
         print("""=======================
